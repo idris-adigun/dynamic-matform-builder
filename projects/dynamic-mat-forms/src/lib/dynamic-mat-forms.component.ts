@@ -1,100 +1,15 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 @Component({
   selector: 'dynamic-mat-forms',
-  template: `
-    <form
-      *ngIf="schema && schema.fields"
-      [formGroup]="form"
-      (ngSubmit)="onSubmit()"
-    >
-      <div *ngFor="let field of schema.fields" class="form-field">
-        <ng-container [ngSwitch]="field.type">
-          <!-- Text Input -->
-          <mat-form-field *ngSwitchCase="'text'" appearance="outline">
-            <mat-label>{{ field.label }}</mat-label>
-            <input
-              matInput
-              [formControlName]="field.name"
-              [placeholder]="field.placeholder"
-            />
-          </mat-form-field>
-
-          <!-- Email Input -->
-          <mat-form-field *ngSwitchCase="'email'" appearance="outline">
-            <mat-label>{{ field.label }}</mat-label>
-            <input
-              matInput
-              type="email"
-              [formControlName]="field.name"
-              [placeholder]="field.placeholder"
-            />
-          </mat-form-field>
-
-          <!-- Date Picker -->
-          <mat-form-field *ngSwitchCase="'datepicker'" appearance="outline">
-            <mat-label>{{ field.label }}</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker"
-              [formControlName]="field.name"
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-
-          <!-- Checkbox -->
-          <mat-checkbox
-            *ngSwitchCase="'checkbox'"
-            [formControlName]="field.name"
-          >
-            {{ field.label }}
-          </mat-checkbox>
-
-          <!-- Select Dropdown -->
-          <mat-form-field *ngSwitchCase="'select'" appearance="outline">
-            <mat-label>{{ field.label }}</mat-label>
-            <mat-select [formControlName]="field.name">
-              <mat-option
-                *ngFor="let option of field.options"
-                [value]="option.value"
-              >
-                {{ option.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </ng-container>
-
-        <!-- Display Errors -->
-        <mat-error
-          *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
-        >
-          <small *ngIf="form.get(field.name)?.errors?.['required']">
-            {{ field.label }} is required.
-          </small>
-          <small *ngIf="form.get(field.name)?.errors?.['email']">
-            Please enter a valid email.
-          </small>
-        </mat-error>
-      </div>
-
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="form.invalid"
-      >
-        Submit
-      </button>
-    </form>
-  `,
+  template: './dynamic-mat-forms.component.html',
 })
 export class DynamicMatFormsComponent implements OnInit {
   @Input() schema: any;
+  @Input() formStyles?: { [key: string]: any }; // Optional dynamic styles input
+  @Input() formAppearance: MatFormFieldAppearance = 'outline';
   @Output() formSubmit = new EventEmitter<any>();
 
   form!: FormGroup;
@@ -146,6 +61,10 @@ export class DynamicMatFormsComponent implements OnInit {
     if (file) {
       this.fileData[controlName] = file;
     }
+  }
+
+  getStyles(fieldName: string): any {
+    return this.formStyles ? this.formStyles[fieldName] || {} : {};
   }
 
   onSubmit() {

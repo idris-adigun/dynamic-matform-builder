@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ObserversModule } from '@angular/cdk/observers';
 import { DynamicMatFormsComponent } from './dynamic-mat-forms.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
 import { NgModule } from '@angular/core';
 @NgModule({
   declarations: [DynamicMatFormsComponent],
@@ -23,6 +24,7 @@ import { NgModule } from '@angular/core';
     MatNativeDateModule,
     MatButtonModule,
     ObserversModule,
+    MatRadioModule,
   ],
   exports: [DynamicMatFormsComponent],
 })
