@@ -30,11 +30,11 @@ ng add @angular/material
 In your app.module.ts (or another module where you want to use the dynamic forms):
 
 ```TypeScript
-import { DynamicFormsModule } from 'dynamic-forms';
+import { DynamicMatFormsModule } from 'dynamic-mat-forms';
 
 @NgModule({
   imports: [
-    DynamicFormsModule,
+    DynamicMatFormsModule,
     ...
   ],
 })
