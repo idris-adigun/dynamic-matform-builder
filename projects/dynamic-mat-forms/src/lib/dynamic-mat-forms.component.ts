@@ -1,13 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'lib-dynamic-mat-forms',
+  selector: 'dynamic-mat-forms',
   template: `
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div *ngFor="let field of schema.fields" class="form-field">
