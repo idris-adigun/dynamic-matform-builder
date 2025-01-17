@@ -100,15 +100,17 @@ Example schema:
   };
 ```
 
-2. ### Use DynamicMatForms component in your template
-   In your component's template, use the **dynamic-mat-forms** component to display the form:
+### 2. Use DynamicMatForms component in your template
+
+In your component's template, use the **dynamic-mat-forms** component to display the form:
 
 ```html
 <dynamic-mat-forms [schema]="formSchema" (formSubmit)="onFormSubmit($event)"></dynamic-mat-forms>
 ```
 
-3. ### Handle Form Submission
-   In your component class, define the form schema and handle the form submission:
+### 3. Schema types and Handling submission
+
+This example shows text, email, select, radio form type
 
 ```TypeScript
 import { Component } from '@angular/core';
@@ -126,22 +128,36 @@ export class AppComponent {
   formSchema = {
     formName: 'User Form',
     fields: [
+      // Input type text
       {
         name: 'username',
         type: 'text',
         label: 'Username',
         validators: { required: true },
       },
+      // Input type email
       {
         name: 'email',
         type: 'email',
         label: 'Email',
         validators: { required: true, email: true },
       },
+      // Select field
       {
         name: 'role',
         type: 'select',
         label: 'Role',
+        options: [
+          { value: 'admin', label: 'Admin' },
+          { value: 'user', label: 'User' },
+        ],
+        validators: { required: true },
+      },
+      // Radio Buttons
+      {
+        name: 'options',
+        type: 'radio',
+        label: 'Options',
         options: [
           { value: 'admin', label: 'Admin' },
           { value: 'user', label: 'User' },
@@ -162,4 +178,63 @@ export class AppComponent {
     console.log(event);
   }
 }
+```
+
+### 4. Styling your form
+
+You might also want to style your form, to do this dynamic-mat-forms accept _formStyles_ input.
+For instance:
+
+```TypeScript
+...
+  // Dynamic styles for the form
+formStyles = {
+  username: {
+    formField: { width: '100%', marginBottom: '0px', paddingBottom: '0px' },
+    input: { color: 'blue', fontSize: '16px', paddingBottom: '0px' },
+    error: { color: 'purple', fontSize: '12px', paddingTop: '0px' },
+  },
+  email: {
+    formField: { width: '50%', marginBottom: '20px' },
+    input: { color: 'green', fontSize: '16px' },
+  },
+  password: {
+    formField: { width: '100%', marginBottom: '20px' },
+    input: { color: 'red', fontSize: '16px' },
+    error: { color: 'orange', fontSize: '12px' },
+  },
+  submitButton: {
+    backgroundColor: 'purple',
+    color: 'white',
+    padding: '10px 20px',
+  },
+};
+....
+```
+
+Add style to template:
+
+```html
+<dynamic-mat-forms [schema]="formSchema" (formSubmit)="onFormSubmit($event)" [formStyles]="formStyles"> </dynamic-mat-forms>
+```
+
+### 5. Form appearance type
+
+You might also want to specify the form appearance, the default appearance is _outline_
+To change form appearance
+
+- First create the input variable on the component
+
+```TypeScript
+import { MatFormFieldAppearance } from '@angular/material/form-field';
+...
+export class AppComponent {
+  formAppearance: MatFormFieldAppearance = 'fill'; // fill, outline
+...
+```
+
+- Add formAppearance to template
+
+```html
+<dynamic-mat-forms [schema]="formSchema" [formAppearance]="formAppearance" (formSubmit)="onFormSubmit($event)" [formStyles]="formStyles"> </dynamic-mat-forms>
 ```
