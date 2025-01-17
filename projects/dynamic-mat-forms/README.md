@@ -1,6 +1,6 @@
 # DynamicMatForms
 
-Dynamic Forms for Angular is a library that allows you to dynamically generate forms based on a JSON schema. It supports multiple input types, validation, dependent inputs, and animations. This library integrates seamlessly with Angular Material to create responsive and interactive forms.
+DynamicMatForms for Angular is a library that allows you to dynamically generate forms based on a JSON schema. It supports multiple input types, validation, dependent inputs, and animations. This library integrates seamlessly with Angular Material to create responsive and interactive forms.
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
 ### Feature
