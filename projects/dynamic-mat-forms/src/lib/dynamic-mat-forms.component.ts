@@ -4,7 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'dynamic-mat-forms',
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form
+      *ngIf="schema && schema.fields"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+    >
       <div *ngFor="let field of schema.fields" class="form-field">
         <ng-container [ngSwitch]="field.type">
           <!-- Text Input -->
