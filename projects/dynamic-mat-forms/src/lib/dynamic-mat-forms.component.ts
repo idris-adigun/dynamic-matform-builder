@@ -5,6 +5,7 @@ import { MatFormFieldAppearance } from '@angular/material/form-field';
 @Component({
   selector: 'dynamic-mat-forms',
   template: './dynamic-mat-forms.component.html',
+  styleUrls: ['./dynamic-mat-forms.component.css'],
 })
 export class DynamicMatFormsComponent implements OnInit {
   @Input() schema: any;
