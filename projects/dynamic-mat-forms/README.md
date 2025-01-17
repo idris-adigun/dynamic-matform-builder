@@ -63,7 +63,7 @@ export const appConfig: ApplicationConfig = {
 
 Example schema:
 
-```json
+```TypeScript
  formSchema = {
     formName: 'User Form',
     fields: [
