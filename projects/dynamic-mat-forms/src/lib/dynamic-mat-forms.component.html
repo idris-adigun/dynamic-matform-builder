@@ -88,6 +88,26 @@
       </mat-form-field>
     </ng-container>
 
+    <!-- Slide Input -->
+    <mat-form-field *ngSwitchCase="'slide'" [appearance]="formAppearance">
+      <mat-label>{{ field.label }}</mat-label>
+      <mat-slide-toggle [formControlName]="field.name">
+        {{ field.label }}
+      </mat-slide-toggle>
+    </mat-form-field>
+
+    <!-- File Input -->
+    <mat-form-field *ngSwitchCase="'file'" [appearance]="formAppearance">
+      <mat-label>{{ field.label }}</mat-label>
+      <input
+        matInput
+        type="file"
+        [formControlName]="field.name"
+        (change)="onFileChange($event, field.name)"
+        [placeholder]="field.placeholder"
+      />
+    </mat-form-field>
+
     <!-- Display Errors -->
     <mat-error
       *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
