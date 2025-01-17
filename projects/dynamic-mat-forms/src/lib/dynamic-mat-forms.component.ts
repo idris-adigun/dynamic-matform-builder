@@ -1,9 +1,35 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { ObserversModule } from '@angular/cdk/observers'; // Add this import
+
 @Component({
   selector: 'lib-dynamic-mat-forms',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    ObserversModule, // Add this to the imports array
+  ],
   template: `
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div *ngFor="let field of schema.fields" class="form-field">
@@ -70,10 +96,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         <mat-error
           *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
         >
-          <small *ngIf="form.get(field.name)?.errors?.required">
+          <small *ngIf="form.get(field.name)?.errors?.['required']">
             {{ field.label }} is required.
           </small>
-          <small *ngIf="form.get(field.name)?.errors?.email">
+          <small *ngIf="form.get(field.name)?.errors?.['email']">
             Please enter a valid email.
           </small>
         </mat-error>
@@ -89,7 +115,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
       </button>
     </form>
   `,
-  styleUrls: ['./dynamic-mat-forms.component.css'],
 })
 export class DynamicMatFormsComponent implements OnInit {
   @Input() schema: any;
