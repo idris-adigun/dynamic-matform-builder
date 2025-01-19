@@ -77,4 +77,14 @@ export class DynamicMatFormsComponent implements OnInit {
       this.formSubmit.emit(formValue);
     }
   }
+
+  upload(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.files && inputElement.files.length > 0) {
+      const file = inputElement.files[0];
+      const controlName = inputElement.name;
+      this.fileData[controlName] = file;
+      this.form.patchValue({ [controlName]: file });
+    }
+  }
 }
