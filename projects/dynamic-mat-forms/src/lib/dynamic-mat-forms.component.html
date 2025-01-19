@@ -86,40 +86,42 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </ng-container>
 
-    <!-- Slide Input -->
-    <mat-form-field *ngSwitchCase="'slide'" [appearance]="formAppearance">
-      <mat-label>{{ field.label }}</mat-label>
-      <mat-slide-toggle [formControlName]="field.name">
+      <!-- Slide Input -->
+      <mat-slide-toggle
+        *ngSwitchCase="'slide'"
+        [formControlName]="field.name"
+        [ngStyle]="getStyles(field.name)?.slideToggle"
+      >
         {{ field.label }}
       </mat-slide-toggle>
-    </mat-form-field>
 
-    <!-- File Input -->
-    <mat-form-field *ngSwitchCase="'file'" [appearance]="formAppearance">
-      <mat-label>{{ field.label }}</mat-label>
-      <input
-        matInput
-        type="file"
-        [formControlName]="field.name"
-        (change)="onFileChange($event, field.name)"
-        [placeholder]="field.placeholder"
-      />
-    </mat-form-field>
+      <!-- File Input -->
+      <ng-container *ngSwitchCase="'file'">
+        <div (click)="selectFile.click()">
+          <button mat-raised-button color="primary">Select File</button>
+          <input
+            #selectFile
+            type="file"
+            [hidden]="true"
+            (change)="upload($event)"
+            [formControlName]="field.name"
+          /></div
+      ></ng-container>
 
-    <!-- Display Errors -->
-    <mat-error
-      *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
-      [ngStyle]="getStyles(field.name)?.error"
-    >
-      <small *ngIf="form.get(field.name)?.errors?.['required']">
-        {{ field.label }} is required.
-      </small>
-      <small *ngIf="form.get(field.name)?.errors?.['email']">
-        Please enter a valid email.
-      </small>
-    </mat-error>
+      <!-- Display Errors -->
+      <mat-error
+        *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
+        [ngStyle]="getStyles(field.name)?.error"
+      >
+        <small *ngIf="form.get(field.name)?.errors?.['required']">
+          {{ field.label }} is required.
+        </small>
+        <small *ngIf="form.get(field.name)?.errors?.['email']">
+          Please enter a valid email.
+        </small>
+      </mat-error>
+    </ng-container>
   </div>
 
   <button
