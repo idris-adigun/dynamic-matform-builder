@@ -7,9 +7,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ObserversModule } from '@angular/cdk/observers';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DynamicMatFormsComponent } from './dynamic-mat-forms.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSliderModule } from '@angular/material/slider';
 import { NgModule } from '@angular/core';
 @NgModule({
   declarations: [DynamicMatFormsComponent],
@@ -25,6 +27,8 @@ import { NgModule } from '@angular/core';
     MatButtonModule,
     ObserversModule,
     MatRadioModule,
+    MatSliderModule,
+    MatSlideToggleModule,
   ],
   exports: [DynamicMatFormsComponent],
 })
