@@ -8,12 +8,14 @@ import { MatFormFieldAppearance } from '@angular/material/form-field';
   styleUrl: './dynamic-mat-forms.component.css',
 })
 export class DynamicMatFormsComponent implements OnInit {
-  @Input() schema: any;
+  @Input() schema: any = [];
   @Input() formStyles?: { [key: string]: any };
   @Input() formAppearance: MatFormFieldAppearance = 'outline';
   @Output() formSubmit = new EventEmitter<any>();
-  filteredOptions: { [key: string]: string[] } = {};
+
   form!: FormGroup;
+  filteredOptions: { [key: string]: string[] } = {};
+
   fileData: { [key: string]: File } = {};
 
   constructor(private fb: FormBuilder) {}
@@ -43,14 +45,25 @@ export class DynamicMatFormsComponent implements OnInit {
       // Handle dependent fields
       if (field.dependsOn) {
         const dependency = field.dependsOn;
-        this.form.get(dependency.field)?.valueChanges.subscribe((value) => {
-          if (value === dependency.value) {
-            this.form.get(field.name)?.enable();
-          } else {
-            this.form.get(field.name)?.disable();
-            this.form.get(field.name)?.reset();
-          }
-        });
+        if (dependency?.value) {
+          this.form.get(dependency.field)?.valueChanges.subscribe((value) => {
+            if (value === dependency.value) {
+              this.form.get(field.name)?.enable();
+            } else {
+              this.form.get(field.name)?.disable();
+              this.form.get(field.name)?.reset();
+            }
+          });
+        } else {
+          this.form.get(dependency.field)?.valueChanges.subscribe((value) => {
+            if (value) {
+              this.form.get(field.name)?.enable();
+            } else {
+              this.form.get(field.name)?.disable();
+              this.form.get(field.name)?.reset();
+            }
+          });
+        }
         this.form.get(field.name)?.disable(); // Initially disable
       }
     });
