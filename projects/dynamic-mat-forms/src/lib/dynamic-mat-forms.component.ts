@@ -9,12 +9,11 @@ import { MatFormFieldAppearance } from '@angular/material/form-field';
 })
 export class DynamicMatFormsComponent implements OnInit {
   @Input() schema: any;
-  @Input() formStyles?: { [key: string]: any }; // Optional dynamic styles input
+  @Input() formStyles?: { [key: string]: any };
   @Input() formAppearance: MatFormFieldAppearance = 'outline';
   @Output() formSubmit = new EventEmitter<any>();
-
+  filteredOptions: { [key: string]: string[] } = {};
   form!: FormGroup;
-
   fileData: { [key: string]: File } = {};
 
   constructor(private fb: FormBuilder) {}
@@ -22,6 +21,15 @@ export class DynamicMatFormsComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({});
     this.buildForm();
+  }
+
+  filterOptions(event: any, field: any): void {
+    const value = event.target.value;
+    console.log(value);
+    const filterValue = value.toLowerCase();
+    this.filteredOptions[field.data] = field.data.filter((option: string) =>
+      option.toLowerCase().includes(filterValue)
+    );
   }
 
   buildForm() {

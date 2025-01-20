@@ -41,6 +41,7 @@
           matInput
           [matDatepicker]="picker"
           [formControlName]="field.name"
+          [placeholder]="field.placeholder"
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -96,6 +97,44 @@
         {{ field.label }}
       </mat-slide-toggle>
 
+      <!-- Auto-complete Input -->
+      <mat-form-field *ngSwitchCase="'autocomplete'" class="full-width">
+        <mat-label>{{ field.label }}</mat-label>
+        <input
+          matInput
+          [formControlName]="field.name"
+          [matAutocomplete]="auto"
+          (input)="filterOptions($event, field)"
+        />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let option of filteredOptions[field.data]"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- Auto-complete Input -->
+      <mat-form-field *ngSwitchCase="'autocomplete'" class="full-width">
+        <mat-label>{{ field.label }}</mat-label>
+        <input
+          matInput
+          [formControlName]="field.name"
+          [matAutocomplete]="auto"
+          (input)="filterOptions($event, field)"
+        />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let option of filteredOptions[field.data]"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
       <!-- File Input -->
       <ng-container *ngSwitchCase="'file'">
         <div (click)="selectFile.click()">
@@ -108,7 +147,6 @@
             [formControlName]="field.name"
           /></div
       ></ng-container>
-
       <!-- Display Errors -->
       <mat-error
         *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
