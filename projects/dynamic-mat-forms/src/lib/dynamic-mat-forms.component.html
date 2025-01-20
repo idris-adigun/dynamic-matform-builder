@@ -116,25 +116,6 @@
         </mat-autocomplete>
       </mat-form-field>
 
-      <!-- Auto-complete Input -->
-      <mat-form-field *ngSwitchCase="'autocomplete'" class="full-width">
-        <mat-label>{{ field.label }}</mat-label>
-        <input
-          matInput
-          [formControlName]="field.name"
-          [matAutocomplete]="auto"
-          (input)="filterOptions($event, field)"
-        />
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option
-            *ngFor="let option of filteredOptions[field.data]"
-            [value]="option"
-          >
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
       <!-- File Input -->
       <ng-container *ngSwitchCase="'file'">
         <div (click)="selectFile.click()">
