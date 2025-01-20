@@ -110,7 +110,7 @@ In your component's template, use the **dynamic-mat-forms** component to display
 
 ### 3. Schema types and Handling submission
 
-This example shows text, email, select, radio form type
+This example shows text, email, password, datepicker, file, checkbox, slide-toggle,select, radio form type
 
 ```TypeScript
 import { Component } from '@angular/core';
@@ -125,37 +125,46 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  formSchema = {
+    formSchema = {
     formName: 'User Form',
     fields: [
-      // Input type text
       {
-        name: 'username',
+        name: 'text-input-field',
         type: 'text',
         label: 'Username',
+        placeholder: 'Enter your Username',
         validators: { required: true },
       },
-      // Input type email
       {
-        name: 'email',
+        name: 'password-field',
+        type: 'password',
+        label: 'Password',
+        placeholder: 'Enter your password',
+        validators: {
+          required: true,
+          minLength: 6,
+          maxLength: 10,
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])',
+        },
+      },
+      {
+        name: 'email-field',
         type: 'email',
         label: 'Email',
+        placeholder: 'Enter your email',
         validators: { required: true, email: true },
       },
-      // Select field
       {
-        name: 'role',
-        type: 'select',
-        label: 'Role',
-        options: [
-          { value: 'admin', label: 'Admin' },
-          { value: 'user', label: 'User' },
-        ],
+        name: 'datepicker-field',
+        type: 'datepicker',
+        label: 'Date of Birth',
+        placeholder: 'Enter your date of birth',
         validators: { required: true },
+        min: new Date('01/01/1900'),
+        max: new Date('01/01/2021'),
       },
-      // Radio Buttons
       {
-        name: 'options',
+        name: 'radio-field-example',
         type: 'radio',
         label: 'Options',
         options: [
@@ -165,10 +174,70 @@ export class AppComponent {
         validators: { required: true },
       },
       {
+        name: 'autocomplete-field-one',
+        type: 'autocomplete',
+        label: 'Country',
+        data: [
+          'Canada',
+          'United States',
+          'Mexico',
+          'Brazil',
+          'Germany',
+          'France',
+          'Italy',
+        ],
+      },
+      {
+        name: 'autocomplete-two',
+        type: 'autocomplete',
+        label: 'Country',
+        data: [
+          'Nigeria',
+          'United States',
+          'Mexico',
+          'Brazil',
+          'Germany',
+          'France',
+          'Italy',
+        ],
+      },
+      {
+        name: 'checkbox-field',
+        type: 'checkbox',
+        label: 'Terms and Conditions',
+        validators: { required: true },
+      },
+      {
+        name: 'role',
+        type: 'select',
+        label: 'Role',
+        placeholder: 'Select a role',
+        options: [
+          { value: 'admin', label: 'Admin' },
+          { value: 'user', label: 'User' },
+        ],
+        validators: { required: true },
+      },
+      {
+        name: 'slide-toggle-field',
+        type: 'slide-toggle',
+        label: 'Slide',
+        min: 0,
+        max: 100,
+        validators: { required: true },
+      },
+      {
+        name: 'file-field',
+        type: 'file',
+        label: 'Upload File',
+        validators: { required: true },
+      },
+      {
         name: 'adminCode',
         type: 'text',
         label: 'Admin Code',
-        dependsOn: { field: 'role', value: 'admin' },
+        // dependsOn: { field: 'role', value: 'admin' },
+        dependsOn: { field: 'role' },
         validators: { requiredWhen: { field: 'role', value: 'admin' } },
       },
     ],
@@ -180,7 +249,49 @@ export class AppComponent {
 }
 ```
 
-### 4. Styling your form
+### 4. Handling dependency
+
+If you want to make a field dependent on the another field either by value or by just by being filled
+you can add the following to the schema in concern, for instance
+
+```TypeScript
+formSchema = {
+  ...
+      {
+        name: 'role',
+        type: 'select',
+        label: 'Role',
+        placeholder: 'Select a role',
+        options: [
+          { value: 'admin', label: 'Admin' },
+          { value: 'user', label: 'User' },
+        ],
+        validators: { required: true },
+      },
+      {
+        name: 'adminCode',
+        type: 'text',
+        label: 'Admin Code',
+        dependsOn: { field: 'role' },
+        validators: { requiredWhen: { field: 'role', value: 'admin' } },
+      },
+}
+
+```
+
+In the code above adminCode field depends on role field to be valid before it shows up, otherwise it's disabled. Also it validity depends on the role field value being 'admin'
+
+If you want the field to depend on both parent field and value, you can update the _dependsOn_ value to:
+
+```TypeScript
+...
+dependsOn: { field: 'role', value: 'admin' },
+...
+```
+
+This means the value of role has be 'admin' for adminCode field to be enabled
+
+### 5. Styling your form
 
 You might also want to style your form, to do this dynamic-mat-forms accept _formStyles_ input.
 For instance:
@@ -218,7 +329,7 @@ Add style to template:
 <dynamic-mat-forms [schema]="formSchema" (formSubmit)="onFormSubmit($event)" [formStyles]="formStyles"> </dynamic-mat-forms>
 ```
 
-### 5. Form appearance type
+### 6. Form appearance type
 
 You might also want to specify the form appearance, the default appearance is _outline_
 To change form appearance
