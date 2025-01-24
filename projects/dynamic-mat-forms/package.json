@@ -1,11 +1,12 @@
 {
   "name": "dynamic-mat-forms",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0"
   },
   "dependencies": {
+    "dynamic-mat-forms": "file:",
     "tslib": "^2.3.0"
   },
   "sideEffects": false

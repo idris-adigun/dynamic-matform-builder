@@ -1,6 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/dynamic-mat-forms",
+  "allowedNonPeerDependencies": ["dynamic-mat-forms"],
   "lib": {
     "entryFile": "src/public-api.ts"
   }
