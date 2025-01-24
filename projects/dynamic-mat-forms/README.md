@@ -9,6 +9,7 @@ This library was generated with [Angular CLI](https://github.com/angular/angular
 - Multiple Input Types: Supports text, checkbox, radio buttons, file uploads, date pickers, and more to come.
 - Validation: Built-in support for required, email, and custom validators.
 - Dependent Inputs: Conditional form controls that enable or disable based on other field values.
+- Responsive Grid: Automatically adjusts the layout of form fields based on screen size and orientation.
 - Animations: Smooth form transitions using Angular Material's animation system.
 
 ## Installation
@@ -66,18 +67,24 @@ Example schema:
 ```TypeScript
  formSchema = {
     formName: 'User Form',
+    rowHeight: '90px',
+    cols: '2',
     fields: [
       {
         name: 'username',
         type: 'text',
         label: 'Username',
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'email',
         type: 'email',
         label: 'Email',
         validators: { required: true, email: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'role',
@@ -88,6 +95,8 @@ Example schema:
           { value: 'user', label: 'User' },
         ],
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'adminCode',
@@ -95,6 +104,8 @@ Example schema:
         label: 'Admin Code',
         dependsOn: { field: 'role', value: 'admin' },
         validators: { requiredWhen: { field: 'role', value: 'admin' } },
+        colspan: '1',
+        rowspan: '1',
       },
     ],
   };
@@ -127,6 +138,8 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
     formSchema = {
     formName: 'User Form',
+    rowHeight: '90px',
+    cols: '2',
     fields: [
       {
         name: 'text-input-field',
@@ -134,6 +147,8 @@ export class AppComponent {
         label: 'Username',
         placeholder: 'Enter your Username',
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'password-field',
@@ -146,6 +161,8 @@ export class AppComponent {
           maxLength: 10,
           pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])',
         },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'email-field',
@@ -153,6 +170,8 @@ export class AppComponent {
         label: 'Email',
         placeholder: 'Enter your email',
         validators: { required: true, email: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'datepicker-field',
@@ -162,6 +181,8 @@ export class AppComponent {
         validators: { required: true },
         min: new Date('01/01/1900'),
         max: new Date('01/01/2021'),
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'radio-field-example',
@@ -172,6 +193,8 @@ export class AppComponent {
           { value: 'user', label: 'User' },
         ],
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'autocomplete-field-one',
@@ -186,6 +209,8 @@ export class AppComponent {
           'France',
           'Italy',
         ],
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'autocomplete-two',
@@ -200,12 +225,16 @@ export class AppComponent {
           'France',
           'Italy',
         ],
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'checkbox-field',
         type: 'checkbox',
         label: 'Terms and Conditions',
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'role',
@@ -217,6 +246,8 @@ export class AppComponent {
           { value: 'user', label: 'User' },
         ],
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'slide-toggle-field',
@@ -225,12 +256,16 @@ export class AppComponent {
         min: 0,
         max: 100,
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'file-field',
         type: 'file',
         label: 'Upload File',
         validators: { required: true },
+        colspan: '1',
+        rowspan: '1',
       },
       {
         name: 'adminCode',
@@ -239,6 +274,8 @@ export class AppComponent {
         // dependsOn: { field: 'role', value: 'admin' },
         dependsOn: { field: 'role' },
         validators: { requiredWhen: { field: 'role', value: 'admin' } },
+        colspan: '1',
+        rowspan: '1',
       },
     ],
   };
@@ -348,4 +385,51 @@ export class AppComponent {
 
 ```html
 <dynamic-mat-forms [schema]="formSchema" [formAppearance]="formAppearance" (formSubmit)="onFormSubmit($event)" [formStyles]="formStyles"> </dynamic-mat-forms>
+```
+
+### 7. Adjust Form Grid
+
+DynamicMatForms allows yu to set the grid format
+
+To set form grid, set the _cols_ of the schema and the _rowHeight_
+
+```TypeScript
+formSchema = {
+  formName: 'User Form',
+  rowHeight: '90px', // height of each grid row
+  cols: '2', // number of grid columns
+  fields: [
+    // Your form fields here
+  ],
+};
+```
+
+You can also set the _colspan_ and _rowspan_ for each grid item, for mor info on Angular Material grid-list, see here (https://material.angular.io/components/grid-list/overview)
+
+```TypeScript
+formSchema = {
+  formName: 'User Form',
+  rowHeight: '90px', // height of each grid row
+  cols: '2', // number of grid columns
+  fields: [
+    ...
+      {
+        name: 'autocomplete-two',
+        type: 'autocomplete',
+        label: 'Country',
+        data: [
+          'Nigeria',
+          'United States',
+          'Mexico',
+          'Brazil',
+          'Germany',
+          'France',
+          'Italy',
+        ],
+        colspan: '1', // colspan
+        rowspan: '1', //rowspan
+      }
+      ...
+  ],
+};
 ```
