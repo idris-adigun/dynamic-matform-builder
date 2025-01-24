@@ -2,27 +2,34 @@
   *ngIf="schema && schema.fields"
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
+  class="form-field"
 >
-  <div *ngFor="let field of schema.fields" class="form-field">
-    <ng-container [ngSwitch]="field.type">
-      <!-- Text Input -->
-      <mat-form-field
-        *ngSwitchCase="'text'"
-        [appearance]="formAppearance"
-        [ngStyle]="getStyles(field.name)?.formField"
-      >
-        <mat-label>{{ field.label }}</mat-label>
-        <input
-          matInput
-          [formControlName]="field.name"
-          [placeholder]="field.placeholder"
-          [ngStyle]="getStyles(field.name)?.input"
-        />
-      </mat-form-field>
+  <mat-grid-list [cols]="schema.cols" [rowHeight]="schema.rowHeight">
+    @for (field of schema.fields; track field.type) { @switch (field.type) {
+    <!-- Text Input -->
+    @case ('text'){
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
+      <div class="full-width">
+        <mat-form-field
+          [appearance]="formAppearance"
+          [ngStyle]="getStyles(field.name)?.formField"
+        >
+          <mat-label>{{ field.label }}</mat-label>
+          <input
+            matInput
+            [formControlName]="field.name"
+            [placeholder]="field.placeholder"
+            [ngStyle]="getStyles(field.name)?.input"
+          />
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    }
 
-      <!-- Password Input -->
+    <!-- Password Input -->
+    @case ('password'){
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
       <mat-form-field
-        *ngSwitchCase="'password'"
         [appearance]="formAppearance"
         [ngStyle]="getStyles(field.name)?.formField"
       >
@@ -35,9 +42,13 @@
           [ngStyle]="getStyles(field.name)?.input"
         />
       </mat-form-field>
+    </mat-grid-tile>
+    }
 
-      <!-- Email Input -->
-      <mat-form-field *ngSwitchCase="'email'" [appearance]="formAppearance">
+    <!-- Email Input -->
+    @case ('email'){
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
+      <mat-form-field [appearance]="formAppearance">
         <mat-label>{{ field.label }}</mat-label>
         <input
           matInput
@@ -47,10 +58,13 @@
           [ngStyle]="getStyles(field.name)?.input"
         />
       </mat-form-field>
+    </mat-grid-tile>
+    }
+    <!-- Date Picker -->
+    @case ('datepicker'){
 
-      <!-- Date Picker -->
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
       <mat-form-field
-        *ngSwitchCase="'datepicker'"
         [appearance]="formAppearance"
         [ngStyle]="getStyles(field.name)?.formField"
       >
@@ -67,10 +81,14 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
+    </mat-grid-tile>
+    }
 
-      <!-- Radio -->
+    <!-- Radio -->
+    @case ('radio'){
+
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
       <mat-radio-group
-        *ngIf="field.type === 'radio'"
         [formControlName]="field.name"
         [ngStyle]="getStyles(field.name)?.radioGroup"
       >
@@ -82,19 +100,25 @@
           {{ option.label }}
         </mat-radio-button>
       </mat-radio-group>
+    </mat-grid-tile>
+    }
+    <!-- Checkbox -->
+    @case ('checkbox'){
 
-      <!-- Checkbox -->
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
       <mat-checkbox
-        *ngSwitchCase="'checkbox'"
         [formControlName]="field.name"
         [ngStyle]="getStyles(field.name)?.checkbox"
       >
         {{ field.label }}
       </mat-checkbox>
+    </mat-grid-tile>
+    }
+    <!-- Select Dropdown -->
+    @case ('select'){
 
-      <!-- Select Dropdown -->
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
       <mat-form-field
-        *ngSwitchCase="'select'"
         [appearance]="formAppearance"
         [ngStyle]="getStyles(field.name)?.formField"
       >
@@ -108,21 +132,29 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </mat-grid-tile>
+    }
 
-      <!-- Slide Input -->
+    <!-- Slide Input -->
+    @case ('slide-toggle'){
+
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
       <mat-slide-toggle
-        *ngSwitchCase="'slide-toggle'"
         [formControlName]="field.name"
         [ngStyle]="getStyles(field.name)?.slideToggle"
       >
         {{ field.label }}
       </mat-slide-toggle>
+    </mat-grid-tile>
+    }
+    <!-- Auto-complete Input -->
+    @case ('autocomplete'){
 
-      <!-- Auto-complete Input -->
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
       <mat-form-field
-        *ngSwitchCase="'autocomplete'"
         class="full-width"
         [ngStyle]="getStyles(field.name)?.formField"
+        [appearance]="formAppearance"
       >
         <mat-label>{{ field.label }}</mat-label>
         <input
@@ -141,36 +173,33 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
+    </mat-grid-tile>
+    }
+    <!-- File Input -->
+    @case ('file'){
+    <mat-grid-tile [colspan]="field.colspan" [rowspan]="field.rowspan">
+      <div (click)="selectFile.click()">
+        <button mat-raised-button color="primary">Select File</button>
+        <input
+          #selectFile
+          type="file"
+          [hidden]="true"
+          (change)="upload($event)"
+          [formControlName]="field.name"
+        />
+      </div>
+    </mat-grid-tile>
+    }
+    <!-- Display Errors -->
 
-      <!-- File Input -->
-      <ng-container *ngSwitchCase="'file'">
-        <div (click)="selectFile.click()">
-          <button mat-raised-button color="primary">Select File</button>
-          <input
-            #selectFile
-            type="file"
-            [hidden]="true"
-            (change)="upload($event)"
-            [formControlName]="field.name"
-          /></div
-      ></ng-container>
-      <!-- Display Errors -->
-      <mat-error
-        *ngIf="form.get(field.name)?.invalid && form.get(field.name)?.touched"
-        [ngStyle]="getStyles(field.name)?.error"
-      >
-        <small *ngIf="form.get(field.name)?.errors?.['required']">
-          {{ field.label }} is required.
-        </small>
-        <small *ngIf="form.get(field.name)?.errors?.['email']">
-          Please enter a valid email.
-        </small>
-      </mat-error>
-    </ng-container>
-  </div>
+    @default {
+    <p>Field type not supported</p>
+    } } }
+  </mat-grid-list>
 
   <button
     mat-raised-button
+    class="submit-button"
     color="primary"
     type="submit"
     [disabled]="form.invalid"

@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { NgModule } from '@angular/core';
 @NgModule({
   declarations: [DynamicMatFormsComponent],
@@ -31,6 +32,7 @@ import { NgModule } from '@angular/core';
     MatSliderModule,
     MatSlideToggleModule,
     MatAutocompleteModule,
+    MatGridListModule,
   ],
   exports: [DynamicMatFormsComponent],
 })
